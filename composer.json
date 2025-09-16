@@ -1,0 +1,34 @@
+{
+    "name": "opencartbot/nbu-qr-v3",
+    "description": "PHP library for generating QR codes according to NBU (National Bank of Ukraine) standard version 003",
+    "type": "library",
+    "keywords": ["qr-code", "nbu", "ukraine", "payment", "banking", "qr"],
+    "homepage": "https://github.com/opencartbot/nbu-qr-v3",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "OpenCartBot",
+            "email": "info@opencartbot.com",
+            "homepage": "https://opencartbot.com"
+        }
+    ],
+    "require": {
+        "php": ">=7.4",
+        "ext-mbstring": "*"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "^9.0"
+    },
+    "autoload": {
+        "psr-4": {
+            "OpenCartBot\\NBUQRGenerator\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "OpenCartBot\\NBUQRGenerator\\Tests\\": "tests/"
+        }
+    },
+    "minimum-stability": "stable",
+    "prefer-stable": true
+}
