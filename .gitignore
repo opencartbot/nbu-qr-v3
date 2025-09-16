@@ -5,3 +5,4 @@ composer.lock
 /.vscode/
 .DS_Store
 phpunit.xml
+/examples/vendor/
