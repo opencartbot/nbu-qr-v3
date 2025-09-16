@@ -276,7 +276,6 @@ class NBUQRCodeGenerator
     {
         return $this->options;
     }
-}
     
     public function generateQRCodePNG(array $options = []): string
     {
@@ -317,3 +316,4 @@ class NBUQRCodeGenerator
         
         return $qrCode->render($url);
     }
+}
