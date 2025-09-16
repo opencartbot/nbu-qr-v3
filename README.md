@@ -185,12 +185,10 @@ $options = [
 
 $qr = new NBUQRCodeGenerator($options);
 $qrUrl = $qr->generateURL();
+echo $qrUrl;
 
-$qrCodeSVG = $qr->generateQRCode([
-    'scale' => 10,
-    'cssClass' => 'payment-qr-code'
-]);
-echo $qrCodeSVG;
+$qrCodeSVG = $qr->generateQRCode();
+echo '<img src="' . $qrCodeSVG . '" alt="QR Code">';
 ```
 
 ### Встановлення дат
