@@ -5,6 +5,8 @@ namespace OpenCartBot\NBUQRGenerator;
 use DateTime;
 use InvalidArgumentException;
 use RuntimeException;
+use chillerlan\QRCode\QRCode;
+use chillerlan\QRCode\QROptions;
 
 /**
  * QR Code Generator для стандарту НБУ версії формату 003
@@ -249,8 +251,69 @@ class NBUQRCodeGenerator
         ];
     }
     
+    public function generateQRCode(array $options = []): string
+    {
+        $url = $this->generateURL();
+        
+        $qrOptions = new QROptions([
+            'version'      => QRCode::VERSION_AUTO,
+            'outputType'   => QRCode::OUTPUT_MARKUP_SVG,
+            'eccLevel'     => QRCode::ECC_M, // Рівень корекції помилок M як вимагає НБУ
+            'scale'        => 8,
+            'addQuietzone' => true,
+            'cssClass'     => 'nbu-qr-code',
+            'svgViewBoxSize' => 500,
+            // Об'єднуємо з переданими опціями
+            ...$options
+        ]);
+        
+        $qrCode = new QRCode($qrOptions);
+        
+        return $qrCode->render($url);
+    }
+    
     public function getOptions(): array
     {
         return $this->options;
     }
 }
+    
+    public function generateQRCodePNG(array $options = []): string
+    {
+        $url = $this->generateURL();
+        
+        $qrOptions = new QROptions([
+            'version'      => QRCode::VERSION_AUTO,
+            'outputType'   => QRCode::OUTPUT_IMAGE_PNG,
+            'eccLevel'     => QRCode::ECC_M,
+            'scale'        => 8,
+            'addQuietzone' => true,
+            'imageBase64'  => false,
+            // Об'єднуємо з переданими опціями
+            ...$options
+        ]);
+        
+        $qrCode = new QRCode($qrOptions);
+        
+        return $qrCode->render($url);
+    }
+    
+    public function generateQRCodeDataURI(array $options = []): string
+    {
+        $url = $this->generateURL();
+        
+        $qrOptions = new QROptions([
+            'version'      => QRCode::VERSION_AUTO,
+            'outputType'   => QRCode::OUTPUT_IMAGE_PNG,
+            'eccLevel'     => QRCode::ECC_M,
+            'scale'        => 8,
+            'addQuietzone' => true,
+            'imageBase64'  => true, // Data URI формат
+            // Об'єднуємо з переданими опціями
+            ...$options
+        ]);
+        
+        $qrCode = new QRCode($qrOptions);
+        
+        return $qrCode->render($url);
+    }

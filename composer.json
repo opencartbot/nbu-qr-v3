@@ -14,7 +14,8 @@
     ],
     "require": {
         "php": ">=7.4",
-        "ext-mbstring": "*"
+        "ext-mbstring": "*",
+        "chillerlan/php-qrcode": "^4.3"
     },
     "require-dev": {
         "phpunit/phpunit": "^9.0"

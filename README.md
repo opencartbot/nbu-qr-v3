@@ -39,19 +39,35 @@ $qrUrl = $qr->generateURL();
 echo $qrUrl;
 ```
 
-### Встановлення опцій окремо
+### Генерація QR-коду (SVG)
 
 ```php
-$qr = new NBUQRCodeGenerator();
-$qr->setOptions([
-    'recipient' => 'Петренко Іван Петрович',
-    'account' => 'UA987654321098765432109876543',
-    'amount' => 500,
-    'recipient_code' => '87654321',
-    'purpose' => 'Повернення боргу'
-]);
+use OpenCartBot\NBUQRGenerator\NBUQRCodeGenerator;
 
+$options = [
+    'recipient' => 'ТОВ "Магазин"',
+    'account' => 'UA123456789012345678901234567',
+    'amount' => 150.75,
+    'recipient_code' => '12345678',
+    'purpose' => 'Оплата товарів'
+];
+
+$qr = new NBUQRCodeGenerator($options);
+
+// Отримати URL для QR-коду
 $qrUrl = $qr->generateURL();
+
+// Згенерувати SVG QR-код
+$svgQRCode = $qr->generateQRCode();
+echo $svgQRCode;
+
+// Згенерувати PNG QR-код (бінарні дані)
+$pngQRCode = $qr->generateQRCodePNG();
+file_put_contents('qrcode.png', $pngQRCode);
+
+// Згенерувати QR-код як Data URI (base64)
+$dataURI = $qr->generateQRCodeDataURI();
+echo '<img src="' . $dataURI . '" alt="QR Code">';
 ```
 
 ## Параметри
@@ -98,7 +114,7 @@ $qrUrl = $qr->generateURL();
 ```php
 $options = [
     'function' => NBUQRCodeGenerator::FUNCTION_UCT,
-    'recipient' => 'ТОВ «ГК«Нафтогаз України»',
+    'recipient' => 'ТОВ "ГК Нафтогаз України"',
     'account' => 'UA201234560000000260323012042',
     'amount' => 2998.39,
     'recipient_code' => '40121452',
@@ -147,6 +163,34 @@ $options = [
 
 $qr = new NBUQRCodeGenerator($options);
 echo $qr->generateURL();
+```
+
+### Оплата в інтернет-магазині
+
+```php
+$options = [
+    'function' => NBUQRCodeGenerator::FUNCTION_ICT,
+    'recipient' => 'ТОВ "ФК ЕВО"',
+    'account' => 'UA673005280000026500504354077',
+    'amount' => 150,
+    'recipient_code' => '37193071',
+    'category' => 'OTHR/GDDS',
+    'reference' => '1225102576',
+    'purpose' => '?MerchantBusinessName="ROZETKA.UA", Покупка товарів, замовлення №821558965.',
+    'display' => '?<InstrForCdtrAgt><InstrInf>MerchID:01234-TermId:43210</InstrInf></InstrForCdtrAgt>',
+    'lock_mask' => 'FFFF', // Заборонити редагування всіх полів
+    'valid_until' => new DateTime('2025-03-21 12:00:00'),
+    'created_at' => new DateTime('2025-01-29 12:00:00')
+];
+
+$qr = new NBUQRCodeGenerator($options);
+$qrUrl = $qr->generateURL();
+
+$qrCodeSVG = $qr->generateQRCode([
+    'scale' => 10,
+    'cssClass' => 'payment-qr-code'
+]);
+echo $qrCodeSVG;
 ```
 
 ### Встановлення дат
