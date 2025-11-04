@@ -170,7 +170,7 @@
             // Налаштування QR-коду для інтернет-магазину
             $qrOptions = [
                 'function' => NBUQRCodeGenerator::FUNCTION_ICT,
-                'recipient' => 'ТОВ ТЕСТ»',
+                'recipient' => 'ТОВ "ТЕСТ"',
                 'account' => 'UA673005280000026500504354011',
                 'amount' => $order['total'],
                 'recipient_code' => '37193011',

@@ -218,7 +218,7 @@ class NBUQRCodeGenerator
     
     public function parseURL(string $url): array
     {
-        if (!str_starts_with($url, $this->baseUrl)) {
+        if (substr($url, 0, strlen($this->baseUrl)) !== $this->baseUrl) {
             throw new InvalidArgumentException('Invalid QR URL format');
         }
         
@@ -254,8 +254,8 @@ class NBUQRCodeGenerator
     public function generateQRCode(array $options = []): string
     {
         $url = $this->generateURL();
-        
-        $qrOptions = new QROptions([
+
+        $defaultOptions = [
             'version'      => QRCode::VERSION_AUTO,
             'outputType'   => QRCode::OUTPUT_MARKUP_SVG,
             'eccLevel'     => QRCode::ECC_M, // Рівень корекції помилок M як вимагає НБУ
@@ -263,12 +263,12 @@ class NBUQRCodeGenerator
             'addQuietzone' => true,
             'cssClass'     => 'nbu-qr-code',
             'svgViewBoxSize' => 500,
-            // Об'єднуємо з переданими опціями
-            ...$options
-        ]);
-        
+        ];
+
+        $qrOptions = new QROptions(array_merge($defaultOptions, $options));
+
         $qrCode = new QRCode($qrOptions);
-        
+
         return $qrCode->render($url);
     }
     
@@ -280,40 +280,40 @@ class NBUQRCodeGenerator
     public function generateQRCodePNG(array $options = []): string
     {
         $url = $this->generateURL();
-        
-        $qrOptions = new QROptions([
+
+        $defaultOptions = [
             'version'      => QRCode::VERSION_AUTO,
             'outputType'   => QRCode::OUTPUT_IMAGE_PNG,
             'eccLevel'     => QRCode::ECC_M,
             'scale'        => 8,
             'addQuietzone' => true,
             'imageBase64'  => false,
-            // Об'єднуємо з переданими опціями
-            ...$options
-        ]);
-        
+        ];
+
+        $qrOptions = new QROptions(array_merge($defaultOptions, $options));
+
         $qrCode = new QRCode($qrOptions);
-        
+
         return $qrCode->render($url);
     }
     
     public function generateQRCodeDataURI(array $options = []): string
     {
         $url = $this->generateURL();
-        
-        $qrOptions = new QROptions([
+
+        $defaultOptions = [
             'version'      => QRCode::VERSION_AUTO,
             'outputType'   => QRCode::OUTPUT_IMAGE_PNG,
             'eccLevel'     => QRCode::ECC_M,
             'scale'        => 8,
             'addQuietzone' => true,
             'imageBase64'  => true, // Data URI формат
-            // Об'єднуємо з переданими опціями
-            ...$options
-        ]);
-        
+        ];
+
+        $qrOptions = new QROptions(array_merge($defaultOptions, $options));
+
         $qrCode = new QRCode($qrOptions);
-        
+
         return $qrCode->render($url);
     }
 }
